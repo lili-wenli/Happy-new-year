@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Happy New Year</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-top: 120px;
+            font-size: 50px;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>{{ message }}</h1>
+
+<canvas id="canvas"></canvas>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+function heart(x, y, size) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x - size, y - size, x - size * 2, y + size, x, y + size * 2);
+    ctx.bezierCurveTo(x + size * 2, y + size, x + size, y - size, x, y);
+    ctx.fillStyle = "pink";
+    ctx.fill();
+}
+
+function createParticles() {
+    for (let i = 0; i < 6; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: canvas.height,
+            speed: Math.random() * 2 + 1
+        });
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+        p.y -= p.speed;
+        heart(p.x, p.y, 6);
+    });
+
+    requestAnimationFrame(animate);
+}
+
+setInterval(createParticles, 500);
+animate();
+</script>
+
+</body>
+</html>
